@@ -1,8 +1,31 @@
 library(tidyverse)
 
 load("Data/SMC_Data_Download_081820.Rdata")
+load("Data/latlongxwalk.RData")
 head(chem_batch.df)
 head(chem_results.df)
+
+CEDEN_chem_locations <- chem_results.df %>% 
+  select(
+    stationcode, sampledate
+  ) %>%
+  inner_join(
+    latlongxwalk, by = c('stationcode','sampledate')
+  ) %>%
+  mutate(
+    ProjectCode = 'SMC',
+    Datum = 'WGS84',
+    CoordinateNumber = 1
+  ) %>%
+  select(
+    StationCode = stationcode,
+    SampleDate = sampledate,
+    ProjectCode,
+    CoordinateNumber,
+    ActualLatitude = actual_latitude,
+    ActualLongitude = actual_longitude,
+    Datum
+  )
 
 CEDEN_chem_labbatch<-chem_batch.df %>%
   # filter() %>% #Eventually add code to filter out entries we don't want to deal with
