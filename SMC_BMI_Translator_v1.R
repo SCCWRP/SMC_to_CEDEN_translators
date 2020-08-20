@@ -14,8 +14,7 @@ csci_suppl1_oe.df<-bmi_csci[[7]]
 
 CEDEN_benthic_locations<-bmi_tax_sampleinfo.df %>%
   # filter() %>%
-  inner_join(lu_station.df %>%
-              select(stationcode=stationid, latitude,longitude) )%>%
+  inner_join(latlongxwalk, by = c('stationcode','sampledate')) %>%
   transmute(StationCode=stationcode,
             SampleDate=sampledate,
             # ProjectCode=paste0("SMC_",login_owner, login_year))
@@ -27,8 +26,8 @@ CEDEN_benthic_locations<-bmi_tax_sampleinfo.df %>%
             LocationCode="Thalweg",
             GeometryShape="Point",
             CoordinateNumber=1,
-            ActualLatitude=latitude, #This is target. Where is actual?
-            ActualLongitude=longitude, #This is target. Where is actual?
+            ActualLatitude=actual_latitude, #This is target. Where is actual?
+            ActualLongitude=actual_longitude, #This is target. Where is actual?
             Datum="WGS84",
             CoordinateSource="GPS", #If we find the actuals...
             Elevation="",
@@ -104,8 +103,3 @@ CEDEN_benthic_benthicresults<-bmi_tax_sampleinfo.df %>%
 
 
 
-
-
-
-head(bmi_tax_sampleinfo.df)
-head(chem_results.df)
