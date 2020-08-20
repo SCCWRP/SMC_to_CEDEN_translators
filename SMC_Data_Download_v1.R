@@ -127,5 +127,9 @@ gis.df<-dbGetQuery(con, '
                      SELECT * FROM
                      sde.tblgismetrics')
 
-
+latlongxwalk <- dbGetQuery(con, '
+                     SELECT DISTINCT stationcode, sampledate, actual_latitude, actual_longitude FROM
+                     unified_phab
+                     ')
+save(latlongxwalk, file = "Data/latlongxwalk.RData")
 
